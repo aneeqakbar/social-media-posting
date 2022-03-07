@@ -1,0 +1,207 @@
+{% load static %}
+
+<nav class="navbar navbar-wrapper is-cloned p-0" style="-webkit-transform: translateY(0); transform: translateY(0);">
+    <div class="container">
+        <!-- Brand -->
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <img class="switcher-logo" src="{% static 'img/logos/logo/bulkit-core.svg' %}" alt="">
+            </a>
+
+            <!-- Sidebar Trigger -->
+            {% comment %} <a class="navbar-item hamburger-btn navigation-trigger" href="javascript:void(0);">
+                <span class="menu-toggle">
+                  <span class="icon-box-toggle">
+                      <span class="rotate">
+                          <i class="icon-line-top"></i>
+                          <i class="icon-line-center"></i>
+                          <i class="icon-line-bottom"></i>
+                      </span>
+                </span>
+                </span>
+            </a> {% endcomment %}
+
+            <!-- Responsive toggle -->
+            <div class="custom-burger" data-target="is-cloned">
+                <a class="responsive-btn" href="javascript:void(0);">
+                    <span class="menu-toggle">
+                      <span class="icon-box-toggle">
+                          <span class="rotate">
+                              <i class="icon-line-top"></i>
+                              <i class="icon-line-center"></i>
+                              <i class="icon-line-bottom"></i>
+                          </span>
+                    </span>
+                    </span>
+                </a>
+            </div>
+            <!-- /Responsive toggle -->
+        </div>
+
+        <!-- Navbar menu -->
+        <div id="is-cloned" class="navbar-menu">
+            <!-- Navbar Start -->
+            <div class="navbar-start">
+                <!-- Dropdown -->
+                <div class="navbar-item has-dropdown is-hoverable is-mega is-hidden-mobile">
+                    <div class="navbar-link">
+                        Product
+                    </div>
+                    <div class="navbar-dropdown is-megamenu animated prefadeInUp fadeInUp" data-style="width: 18rem;">
+                        <div class="mega-inner">
+                            <div class="container">
+                                <div class="columns">
+                                    <div class="column">
+                                        <h2 class="title is-6 is-mega-menu-title">Segmentation</h2>
+                                        <a class="navbar-item is-flex" href="kit7-landing.html">
+                                            <i class="im im-icon-Structure"></i>
+                                            <div class="navbar-content">
+                                                <p>
+                                                    <small class="color-primary">Segments</small>
+                                                </p>
+                                                <p>Segment your customers</p>
+                                            </div>
+                                        </a>
+                                        <a class="navbar-item is-flex" href="kit7-landing.html">
+                                            <i class="im im-icon-Umbrella-3"></i>
+                                            <div class="navbar-content">
+                                                <p>
+                                                    <small class="color-primary">Impact Reports</small>
+                                                </p>
+                                                <p>Get detailed impact reports</p>
+                                            </div>
+                                        </a>
+                                        <a class="navbar-item is-flex" href="kit7-landing.html">
+                                            <i class="im im-icon-Mail-Add"></i>
+                                            <div class="navbar-content">
+                                                <p>
+                                                    <small class="color-primary">Campaigns</small>
+                                                </p>
+                                                <p>Targeted Campaigns</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="column">
+                                        <h2 class="title is-6 is-mega-menu-title">Lead Generation</h2>
+                                        <a class="navbar-item is-flex" href="kit7-landing.html">
+                                            <i class="im im-icon-Magnifi-Glass2"></i>
+                                            <div class="navbar-content">
+                                                <p>
+                                                    <small class="color-primary">Search</small>
+                                                </p>
+                                                <p>Lead automation digging</p>
+                                            </div>
+                                        </a>
+                                        <a class="navbar-item is-flex" href="kit7-landing.html">
+                                            <i class="im im-icon-Two-Windows"></i>
+                                            <div class="navbar-content">
+                                                <p>
+                                                    <small class="color-primary">Chrome Extension</small>
+                                                </p>
+                                                <p>Generate more leads</p>
+                                            </div>
+                                        </a>
+                                        <a class="navbar-item is-flex" href="kit7-landing.html">
+                                            <i class="im im-icon-Flash"></i>
+                                            <div class="navbar-content">
+                                                <p>
+                                                    <small class="color-primary">Progress tracker</small>
+                                                </p>
+                                                <p>Track your progress</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="column">
+                                        <h2 class="title is-6 is-mega-menu-title">Deal Management</h2>
+                                        <a class="navbar-item is-flex" href="kit7-landing.html">
+                                            <i class="im im-icon-Sidebar-Window"></i>
+                                            <div class="navbar-content">
+                                                <p>
+                                                    <small class="color-primary">Dashboard</small>
+                                                </p>
+                                                <p>Manage your deals</p>
+                                            </div>
+                                        </a>
+                                        <a class="navbar-item is-flex" href="kit7-landing.html">
+                                            <i class="im im-icon-Note"></i>
+                                            <div class="navbar-content">
+                                                <p>
+                                                    <small class="color-primary">Financial Reports</small>
+                                                </p>
+                                                <p>Assess your efficiency</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="column">
+                                        <h2 class="title is-6 is-mega-menu-title">Get Started</h2>
+                                        <p class="is-cta">This is a wonderful menu description item. It can be used as a CTA.</p>
+                                        <p class="is-cta">
+                                            <a href="#" class="button btn-align mega-btn primary-btn">Learn more</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="navbar-divider">
+                            <div class="navbar-item is-footer is-hidden-mobile">
+                                <div class="navbar-content">
+                                    <div class="level is-mobile">
+                                        <div class="level-left">
+                                            <div class="level-item">
+                                                <strong>Follow us</strong>
+                                            </div>
+                                        </div>
+                                        <div class="level-right">
+                                            <div class="level-item">
+                                                <a class="social-link" href="#"><i class="fa fa-twitter"></i></a>
+                                                <a class="social-link" href="#"><i class="fa fa-facebook"></i></a>
+                                                <a class="social-link" href="#"><i class="fa fa-behance"></i></a>
+                                                <a class="social-link" href="#"><i class="fa fa-github"></i></a>
+                                                <a class="social-link" href="#"><i class="fa fa-tumblr"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="menu-image is-hidden-mobile">
+                                <img src="assets/img/graphics/legacy/megamenu-core.svg" data-base-url="assets/img/graphics/legacy/megamenu" data-extension=".svg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- Navbar item -->
+                <a class="navbar-item is-slide is-centered-tablet is-hidden-desktop is-hidden-tablet" href="kit7-landing.html">
+                    Product
+                </a>
+
+            </div>
+
+            <!-- Navbar end -->
+            <div class="navbar-end">
+                <!-- Navbar item -->
+                {% if not user.is_authenticated %}
+                <a class="navbar-item is-slide is-centered-tablet" href="{% url 'users:login' %}">
+                        Login
+                    </a>
+                    <!-- Signup button -->
+                    <div class="navbar-item is-button is-centered-tablet">
+                        <a id="#signup-btn" href="{% url 'users:RegisterView' %}" class="button button-cta is-bold btn-align primary-btn raised is-rounded">
+                            Sign up
+                        </a>
+                    </div>
+                {% else %}
+                    <a class="navbar-item is-slide is-centered-tablet" href="{% url 'workspace:IndexView' %}">
+                        Workspace
+                    </a>
+                    <a class="navbar-item is-slide is-centered-tablet" href="{% url 'users:ProfileView' %}">
+                        Profile
+                    </a>
+                    <a class="navbar-item is-slide is-centered-tablet" href="{% url 'users:logout' %}">
+                        Log Out
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+

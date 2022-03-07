@@ -1,0 +1,26 @@
+<div class="profile-header">
+    <div class="profile-header-inner">
+        <div class="profile-avatar">
+            <img class="avatar" src="{{user.profile.get_image_url}}" alt="" data-demo-src="{{user.profile.get_image_url}}" />
+            <h2 class="title is-4 is-narrow">{{user.username|title}}</h2>
+            <p class="subtitle is-6">{{user.role}}</p>
+        </div>
+
+        <div class="tabs is-centered">
+            <ul>
+                {% url 'users:ProfileView' as url %}
+                <li class="{% if request.path == url %} is-active {% endif %}">
+                    <a href="{% url 'users:ProfileView' %}">Overview</a>
+                </li>
+                {% url 'users:AllPostsView' as url %}
+                <li class="{% if request.path == url %} is-active {% endif %}">
+                    <a href="{% url 'users:AllPostsView' %}">Posts</a>
+                </li>
+                {% url 'users:ContributorsView' as url %}
+                <li class="{% if request.path == url %} is-active {% endif %}">
+                    <a href="{% url 'users:ContributorsView' %}">Contributors</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

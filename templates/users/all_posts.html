@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    {% include "template-parts/profile_header.html" %}
+
+    <div class="section is-app-grey">
+        <div class="container">
+            <div class="profile-wrapper is-larger">
+                <div class="columns is-multiline">
+                    <!--Project-->
+                    {% for post in user.profile.get_posts %}
+                    <div class="column is-4">
+                        <a href="#" class="project-card text-center">
+                            <img src="{{post.get_image_url}}" data-demo-src="{{post.get_image_url}}" alt="" height="100%"/>
+                            <div class="project-card-content">
+                                <h3>{{post.title}}</h3>
+                                <p>{{post.body}}</p>
+                                <div class="project-members">
+                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/alan.jpg" alt="" />
+                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/alex.jpg" alt="" />
+                                    <img src="https://via.placeholder.com/150x150" data-demo-src="assets/img/avatars/betty.jpg" alt="" />
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+

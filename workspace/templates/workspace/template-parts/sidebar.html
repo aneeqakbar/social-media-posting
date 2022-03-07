@@ -1,0 +1,30 @@
+<div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+    <div class="sidebar-brand d-none d-md-flex">
+    </div>
+    <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'workspace:IndexView' %}">
+          <i class="far fa-clipboard fs-3 p-2"></i>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'workspace:ContentView' %}">
+          <i class="fas fa-folder-open fs-3 p-2"></i>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'workspace:SchedulePostView' %}">
+          <i class="far fa-calendar-alt fs-3 p-2"></i>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'workspace:IndexView' %}#1">
+          <i class="fas fa-list-ul fs-3 p-2"></i>
+        </a>
+      </li>
+
+    </ul>
+</div>

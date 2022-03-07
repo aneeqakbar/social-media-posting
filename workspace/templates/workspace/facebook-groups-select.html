@@ -1,0 +1,63 @@
+{% extends 'workspace/index.html' %}
+
+{% block ExtraCss %}
+{% endblock ExtraCss %}
+
+{% block content %}
+    <main class="body flex-grow-1 px-3">
+        <article class="container-lg">
+            <h2 class="fs-3 mb-4">Social Profiles Overview</h2>
+            <form action="{% url 'workspace:FbSelectGroupsView' %}" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    {% for entry in data %}
+                    <section class="col-12 col-lg-6 mb-4">
+                        <div class="card rounded-pill">
+                            <div class="card-body p-2" style="max-height: 100px;">
+                                <div class="row justify-content-evenly align-items-center flex-nowrap">
+                                    <div class="col-2 p-0 text-center" style="min-width: 100px;">
+                                        <img src="{{entry.picture.data.url}}" loading="lazy" alt="" width="60px" height="60px" class="rounded-circle border">
+                                    </div>
+                                    <div class="col-8 p-0">
+                                        <div class="d-inline-block">
+                                            <h2 class="fs-5">{{entry.name}}</h2>
+                                            <p class="text-muted m-0">{{entry.category}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <input type="hidden" name="group_id" value="{{entry.id}}">
+                                        <input type="hidden" name="token" value="{{entry.access_token}}">
+                                        <input type="hidden" name="name" value="{{entry.name}}">
+                                        <input type="hidden" name="image" value="{{entry.picture.data.url}}">
+                                        <input type="hidden" name="add" value="{% if entry.id in previous_account_ids %} true {% else %} false {% endif %}" id="add-input-{{forloop.counter}}">
+                                        <input type="checkbox" class="form-check-input" {% if entry.id in previous_account_ids %} checked {% endif %} onChange="handleCheck(this, {{forloop.counter}})">
+                                    </div>
+                                    {% comment %} <div class="col-2 text-center">
+                                    </div> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    {% endfor %}
+                </div>
+                <input type="submit" class="btn btn-warning" value="Add Pages">
+            </form>
+        </article>
+    </main>
+{% endblock content %}
+
+{% block ExtraJs %}
+
+<script>
+    function handleCheck(checkbox, index){
+        let input = document.getElementById(`add-input-${index}`)
+
+        if (checkbox.checked){
+            input.value = 'true'
+        } else {
+            input.value = 'false'
+        }
+    }
+</script>
+
+{% endblock ExtraJs %}

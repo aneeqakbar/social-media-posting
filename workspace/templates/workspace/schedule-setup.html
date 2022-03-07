@@ -1,0 +1,558 @@
+{% extends 'workspace/index.html' %}
+{% load custom_tags %}
+
+{% block ExtraCss %}
+
+<style>
+    *{
+        --light-bg: rgba(245,245,245,1);
+        --thead-bg: rgba(230,230,230,1);
+        --muted-bg: rgba(180,180,180,1);
+    }
+    .schedule-cont{
+        width: 100%;
+    }
+    .schedule-cont .schedule-table{
+        width: 100%;
+        background-color: var(--light-bg);
+    }
+    .schedule-cont .schedule-table thead{
+        background-color: var(--thead-bg);
+    }
+    .schedule-cont .schedule-table thead th{
+        padding: 10px;
+        text-align: center;
+        width: 14.2%;
+        font-weight: normal;
+    }
+    .schedule-cont .schedule-table tbody td{
+        text-align: center;
+        min-width: 100px;
+        padding: 5px;
+    }
+    .schedule-cont .schedule-table tbody .posting-time,
+    .schedule-cont .schedule-table tbody .add-posting-time{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 60px;
+        border-radius: 5px;
+        border: 1px dashed var(--muted-bg);
+        cursor: pointer;
+    }
+    .schedule-cont .schedule-table tbody .add-posting-time p{
+        margin: 0px;
+    }
+    
+    .schedule-cont .schedule-table tbody .posting-time{
+        background: #fff;
+        border-style: solid;
+    }
+    .posting-time .time{
+        font-weight: 300;
+        font-size: smaller;
+    }
+</style>
+
+<style>
+    [data-selected]{
+        cursor: pointer;
+    }
+    [data-selected="false"]{
+        filter: saturate(0);
+    }
+</style>
+
+{% endblock ExtraCss %}
+
+{% block content %}
+    <main class="body flex-grow-1 px-3">
+        <article class="container-lg">
+            <h2 class="fs-3">Schedule Setup</h2>
+            <p>This is how your categories are scheduled. Looks good? If not, just change it!</p>
+            <div class="row">
+                <section class="col-12 mb-4 schedule-cont" style="overflow-x: auto;">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                                <th>Sunday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for schedule in schedules %}
+                                <tr>
+                                    <td>
+                                        {% with "Monday"|schedule_day_filter as schedules %}
+                                            {% if "Monday"|schedule_day_filter:forloop.counter0 %}
+                                                <div class="posting-time p-2">
+                                                    <div class="d-flex justify-content-between w-100">
+                                                        <div class="d-flex flex-nowrap" style="max-width: 60px; overflow-x: hidden;">
+                                                            {% for account in schedule.accounts.all %}
+                                                            <img src="{{account.image}}" alt="{{account.name}}"
+                                                                class="rounded-circle"
+                                                                width="25px"
+                                                                height="25px"
+                                                            >
+                                                            {% endfor %}
+                                                        </div>
+                                                        <small class="time">
+                                                            {{schedule.time.hour}}:{{schedule.time.minute}}
+                                                        </small>
+                                                    </div>
+                                                    <p class="text-start w-100 m-0">
+                                                        <small>
+                                                            <strong>
+                                                                {{schedule.category.name}}
+                                                            </strong>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                            {% elif forloop.counter0 == schedules.count %}
+                                                <button class="btn-no-style add-posting-time"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#add-posting-time-modal"
+                                                >
+                                                    <i class="fas fa-plus"></i>
+                                                    <p>Add Posting Time</p>
+                                                </button>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                    <td>
+                                        {% with "Tuesday"|schedule_day_filter as schedules %}
+                                            {% if "Tuesday"|schedule_day_filter:forloop.counter0 %}
+                                                <div class="posting-time p-2">
+                                                    <div class="d-flex justify-content-between w-100">
+                                                        <div class="d-flex flex-nowrap" style="max-width: 60px; overflow-x: hidden;">
+                                                            {% for account in schedule.accounts.all %}
+                                                            <img src="{{account.image}}" alt="{{account.name}}"
+                                                                class="rounded-circle"
+                                                                width="25px"
+                                                                height="25px"
+                                                            >
+                                                            {% endfor %}
+                                                        </div>
+                                                        <small class="time">
+                                                            {{schedule.time.hour}}:{{schedule.time.minute}}
+                                                        </small>
+                                                    </div>
+                                                    <p class="text-start w-100 m-0">
+                                                        <small>
+                                                            <strong>
+                                                                {{schedule.category.name}}
+                                                            </strong>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                            {% elif forloop.counter0 == schedules.count %}
+                                                <button class="btn-no-style add-posting-time"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#add-posting-time-modal"
+                                                >
+                                                    <i class="fas fa-plus"></i>
+                                                    <p>Add Posting Time</p>
+                                                </button>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                    <td>
+                                        {% with "Wednesday"|schedule_day_filter as schedules %}
+                                            {% if "Wednesday"|schedule_day_filter:forloop.counter0 %}
+                                                <div class="posting-time p-2">
+                                                    <div class="d-flex justify-content-between w-100">
+                                                        <div class="d-flex flex-nowrap" style="max-width: 60px; overflow-x: hidden;">
+                                                            {% for account in schedule.accounts.all %}
+                                                            <img src="{{account.image}}" alt="{{account.name}}"
+                                                                class="rounded-circle"
+                                                                width="25px"
+                                                                height="25px"
+                                                            >
+                                                            {% endfor %}
+                                                        </div>
+                                                        <small class="time">
+                                                            {{schedule.time.hour}}:{{schedule.time.minute}}
+                                                        </small>
+                                                    </div>
+                                                    <p class="text-start w-100 m-0">
+                                                        <small>
+                                                            <strong>
+                                                                {{schedule.category.name}}
+                                                            </strong>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                            {% elif forloop.counter0 == schedules.count %}
+                                                <button class="btn-no-style add-posting-time"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#add-posting-time-modal"
+                                                >
+                                                    <i class="fas fa-plus"></i>
+                                                    <p>Add Posting Time</p>
+                                                </button>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                    <td>
+                                        {% with "Thursday"|schedule_day_filter as schedules %}
+                                            {% if "Thursday"|schedule_day_filter:forloop.counter0 %}
+                                                <div class="posting-time p-2">
+                                                    <div class="d-flex justify-content-between w-100">
+                                                        <div class="d-flex flex-nowrap" style="max-width: 60px; overflow-x: hidden;">
+                                                            {% for account in schedule.accounts.all %}
+                                                            <img src="{{account.image}}" alt="{{account.name}}"
+                                                                class="rounded-circle"
+                                                                width="25px"
+                                                                height="25px"
+                                                            >
+                                                            {% endfor %}
+                                                        </div>
+                                                        <small class="time">
+                                                            {{schedule.time.hour}}:{{schedule.time.minute}}
+                                                        </small>
+                                                    </div>
+                                                    <p class="text-start w-100 m-0">
+                                                        <small>
+                                                            <strong>
+                                                                {{schedule.category.name}}
+                                                            </strong>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                            {% elif forloop.counter0 == schedules.count %}
+                                                <button class="btn-no-style add-posting-time"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#add-posting-time-modal"
+                                                >
+                                                    <i class="fas fa-plus"></i>
+                                                    <p>Add Posting Time</p>
+                                                </button>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                    <td>
+                                        {% with "Friday"|schedule_day_filter as schedules %}
+                                            {% if "Friday"|schedule_day_filter:forloop.counter0 %}
+                                                <div class="posting-time p-2">
+                                                    <div class="d-flex justify-content-between w-100">
+                                                        <div class="d-flex flex-nowrap" style="max-width: 60px; overflow-x: hidden;">
+                                                            {% for account in schedule.accounts.all %}
+                                                            <img src="{{account.image}}" alt="{{account.name}}"
+                                                                class="rounded-circle"
+                                                                width="25px"
+                                                                height="25px"
+                                                            >
+                                                            {% endfor %}
+                                                        </div>
+                                                        <small class="time">
+                                                            {{schedule.time.hour}}:{{schedule.time.minute}}
+                                                        </small>
+                                                    </div>
+                                                    <p class="text-start w-100 m-0">
+                                                        <small>
+                                                            <strong>
+                                                                {{schedule.category.name}}
+                                                            </strong>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                            {% elif forloop.counter0 == schedules.count %}
+                                                <button class="btn-no-style add-posting-time"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#add-posting-time-modal"
+                                                >
+                                                    <i class="fas fa-plus"></i>
+                                                    <p>Add Posting Time</p>
+                                                </button>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                    <td>
+                                        {% with "Saturday"|schedule_day_filter as schedules %}
+                                            {% if "Saturday"|schedule_day_filter:forloop.counter0 %}
+                                                <div class="posting-time p-2">
+                                                    <div class="d-flex justify-content-between w-100">
+                                                        <div class="d-flex flex-nowrap" style="max-width: 60px; overflow-x: hidden;">
+                                                            {% for account in schedule.accounts.all %}
+                                                            <img src="{{account.image}}" alt="{{account.name}}"
+                                                                class="rounded-circle"
+                                                                width="25px"
+                                                                height="25px"
+                                                            >
+                                                            {% endfor %}
+                                                        </div>
+                                                        <small class="time">
+                                                            {{schedule.time.hour}}:{{schedule.time.minute}}
+                                                        </small>
+                                                    </div>
+                                                    <p class="text-start w-100 m-0">
+                                                        <small>
+                                                            <strong>
+                                                                {{schedule.category.name}}
+                                                            </strong>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                            {% elif forloop.counter0 == schedules.count %}
+                                                <button class="btn-no-style add-posting-time"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#add-posting-time-modal"
+                                                >
+                                                    <i class="fas fa-plus"></i>
+                                                    <p>Add Posting Time</p>
+                                                </button>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                    <td>
+                                        {% with "Sunday"|schedule_day_filter as schedules %}
+                                            {% if "Sunday"|schedule_day_filter:forloop.counter0 %}
+                                                <div class="posting-time p-2">
+                                                    <div class="d-flex justify-content-between w-100">
+                                                        <div class="d-flex flex-nowrap" style="max-width: 60px; overflow-x: hidden;">
+                                                            {% for account in schedule.accounts.all %}
+                                                            <img src="{{account.image}}" alt="{{account.name}}"
+                                                                class="rounded-circle"
+                                                                width="25px"
+                                                                height="25px"
+                                                            >
+                                                            {% endfor %}
+                                                        </div>
+                                                        <small class="time">
+                                                            {{schedule.time.hour}}:{{schedule.time.minute}}
+                                                        </small>
+                                                    </div>
+                                                    <p class="text-start w-100 m-0">
+                                                        <small>
+                                                            <strong>
+                                                                {{schedule.category.name}}
+                                                            </strong>
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                            {% elif forloop.counter0 == schedules.count %}
+                                                <button class="btn-no-style add-posting-time"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#add-posting-time-modal"
+                                                >
+                                                    <i class="fas fa-plus"></i>
+                                                    <p>Add Posting Time</p>
+                                                </button>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </article>
+
+        <section class="modal fade" id="add-posting-time-modal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Define your posting time</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-0">
+                    <form action="{% url 'workspace:SchedulePostView' %}" method="POST" id="posting-schedule-form">
+                        {% csrf_token %}
+                        <section class="px-3">
+                            <p>
+                                <small>Please choose the social profiles you want to share on.</small>
+                            </p>
+                            <div>
+                                {% for account in social_accounts %}
+                                    <img src="{{account.image}}" alt=""
+                                        class="rounded-circle mb-3 border border-primary"
+                                        width="50px"
+                                        height="50px"
+                                        data-select-input="social-account-input-{{account.id}}"
+                                        data-selected="false"
+                                        title="{{account.name}} ({{account.backend}})"
+                                    >
+                                    <input type="hidden" name="social_accounts" value="{{account.id}}" id="social-account-input-{{account.id}}" disabled>
+                                {% endfor %}
+                            </div>
+                        </section>
+                        <hr class="my-2">
+                        <section class="px-3">
+                            <fieldset class="mb-4">
+                                <label for="category-select">Select Category</label>
+                                <select class="form-select" aria-label="Select Category" name="category" id="category-select">
+                                    {% for category in categories %}
+                                        <option value="{{category.id}}">{{category.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </fieldset>
+
+                            <fieldset class="mb-4">
+                                <label for="day-select">Select Day</label>
+                                <div class="row justify-content-evenly text-center border w-100 m-auto">
+                                    <div class="col p-1" style="max-width: 100px;">
+                                        <button class="btn btn-warning btn-sm w-100"
+                                            type="button"
+                                            data-select-input="day-input-1"
+                                            data-selected="false"
+                                        >
+                                            Monday
+                                        </button>
+                                        <input type="hidden" name="day" value="Monday" id="day-input-1" disabled>
+                                    </div>
+                                    <div class="col p-1" style="max-width: 100px;">
+                                        <button class="btn btn-warning btn-sm w-100"
+                                            type="button"
+                                            data-select-input="day-input-2"
+                                            data-selected="false"
+                                        >
+                                            Tuesday
+                                        </button>
+                                        <input type="hidden" name="day" value="Tuesday" id="day-input-2" disabled>
+                                    </div>
+                                    <div class="col p-1" style="max-width: 100px;">
+                                        <button class="btn btn-warning btn-sm w-100"
+                                            type="button"
+                                            data-select-input="day-input-3"
+                                            data-selected="false"
+                                        >
+                                            Wednesday
+                                        </button>
+                                        <input type="hidden" name="day" value="Wednesday" id="day-input-3" disabled>
+                                    </div>
+                                    <div class="col p-1" style="max-width: 100px;">
+                                        <button class="btn btn-warning btn-sm w-100"
+                                            type="button"
+                                            data-select-input="day-input-4"
+                                            data-selected="false"
+                                        >
+                                            Thursday
+                                        </button>
+                                        <input type="hidden" name="day" value="Thursday" id="day-input-4" disabled>
+                                    </div>
+                                    <div class="col p-1" style="max-width: 100px;">
+                                        <button class="btn btn-warning btn-sm w-100"
+                                            type="button"
+                                            data-select-input="day-input-5"
+                                            data-selected="false"
+                                        >
+                                            Friday
+                                        </button>
+                                        <input type="hidden" name="day" value="Friday" id="day-input-5" disabled>
+                                    </div>
+                                    <div class="col p-1" style="max-width: 100px;">
+                                        <button class="btn btn-warning btn-sm w-100"
+                                            type="button"
+                                            data-select-input="day-input-6"
+                                            data-selected="false"
+                                        >
+                                            Saturday
+                                        </button>
+                                        <input type="hidden" name="day" value="Saturday" id="day-input-6" disabled>
+                                    </div>
+                                    <div class="col p-1" style="max-width: 100px;">
+                                        <button class="btn btn-warning btn-sm w-100"
+                                            type="button"
+                                            data-select-input="day-input-7"
+                                            data-selected="false"
+                                        >
+                                            Sunday
+                                        </button>
+                                        <input type="hidden" name="day" value="Sunday" id="day-input-7" disabled>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="mb-4">
+                                <label for="posting-hour-select">Select posting time</label>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <select class="form-select" aria-label="Select Hour" name="hour" id="posting-hour-select">
+                                            <option value="00">00 Hour</option>
+                                            <option value="01">01 Hour</option>
+                                            <option value="02">02 Hour</option>
+                                            <option value="03">03 Hour</option>
+                                            <option value="04">04 Hour</option>
+                                            <option value="05">05 Hour</option>
+                                            <option value="06">06 Hour</option>
+                                            <option value="07">07 Hour</option>
+                                            <option value="08">08 Hour</option>
+                                            <option value="09">09 Hour</option>
+                                            <option value="10">10 Hour</option>
+                                            <option value="11">11 Hour</option>
+                                            <option value="12">12 Hour</option>
+                                            <option value="13">13 Hour</option>
+                                            <option value="14">14 Hour</option>
+                                            <option value="15">15 Hour</option>
+                                            <option value="16">16 Hour</option>
+                                            <option value="17">17 Hour</option>
+                                            <option value="18">18 Hour</option>
+                                            <option value="19">19 Hour</option>
+                                            <option value="20">20 Hour</option>
+                                            <option value="21">21 Hour</option>
+                                            <option value="22">22 Hour</option>
+                                            <option value="23">23 Hour</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <select class="form-select" aria-label="Select Minute" name="minute" id="posting-minutes-select">
+                                            <option value="00">00 Minutes</option>
+                                            <option value="10">10 Minutes</option>
+                                            <option value="20">20 Minutes</option>
+                                            <option value="30">30 Minutes</option>
+                                            <option value="40">40 Minutes</option>
+                                            <option value="50">50 Minutes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </section>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" onclick="submitForm('posting-schedule-form')" class="btn btn-sm btn-primary">Create</button>
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+        </section>
+    </main>
+{% endblock content %}
+
+{% block ExtraJs %}
+
+<script>
+    let imgSelectors = document.querySelectorAll("[data-selected]");
+    imgSelectors.forEach(selector=>{
+        selector.addEventListener("click", ()=>{
+            let isSelected = selector.getAttribute("data-selected");
+            let inputId = selector.getAttribute("data-select-input");
+            let input = document.getElementById(inputId);
+            
+            if (isSelected === "false") {
+                input.disabled = false;
+                selector.setAttribute("data-selected", "true");
+            } else if (isSelected === "true") {
+                input.disabled = true;
+                selector.setAttribute("data-selected", "false");
+            }
+        });
+    });
+</script>
+
+<script>
+    function submitForm(formId){
+        let form = document.getElementById(formId);
+        form.submit();
+    }
+</script>
+
+{% endblock ExtraJs %}

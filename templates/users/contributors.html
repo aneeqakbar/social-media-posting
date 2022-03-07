@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    {% include "template-parts/profile_header.html" %}
+
+    <div class="section is-app-grey">
+        <div class="container">
+            <!--Wrapper-->
+            <div class="profile-wrapper">
+                <!--Main stats-->
+                <div class="profile-card">
+                    <div class="network-stats">
+                        <div class="network-stat">
+                            <span>{{user.profile.get_contributors.count}}</span>
+                            <span>Contributors</span>
+                        </div>
+                        <div class="network-stat">
+                            <span>{{user.profile.get_posts.count}}</span>
+                            <span>Posts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Toolbar-->
+                <div class="network-toolbar">
+                    <h3>Contributors</h3>
+                    <a>View All</a>
+                </div>
+
+                <!--Grid-->
+                <div class="network-grid">
+                    <div class="columns is-multiline">
+                        <!--User-->
+                        {% for user in user.profile.get_contributors %}
+                            <div class="column is-4">
+                                <div class="network-card">
+                                    <div class="network-avatar">
+                                        <img class="avatar" src="{{user.profile.get_image_url}}" alt="" data-demo-src="{{user.profile.get_image_url}}" />
+                                    </div>
+                                    <h3 class="title is-6 is-narrow">{{user.username|title}}</h3>
+                                    {% comment %} <p class="subtitle is-size-7">Sales Manager</p> {% endcomment %}
+                                    <div class="network-stats">
+                                        <div class="network-stat">
+                                            <span>{{user.profile.get_contributors.count}}</span>
+                                            <span>Contributors</span>
+                                        </div>
+                                        <div class="network-stat">
+                                            <span>{{user.profile.get_posts.count}}</span>
+                                            <span>Posts</span>
+                                        </div>
+                                    </div>
+                                    <a>View Profile</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    <div class="load-more">
+                        <button class="button">Load More</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
