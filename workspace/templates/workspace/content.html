@@ -1,0 +1,251 @@
+{% extends 'workspace/index.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block ExtraCss %}
+{% endblock ExtraCss %}
+
+{% block content %}
+    <div class="body flex-grow-1 px-3">
+        <div class="container-lg">
+            {% comment %} edit category modal {% endcomment %}
+            <div class="modal" tabindex="-1" id="editCategoryModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title text-center">Edit Category</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form id="edit_cat_form" action="{% url 'workspace:EditCategory' %}" method="POST" enctype='multipart/form-data' required> {% csrf_token %}
+                          <div class="mb-3">
+                              <label for="name_input" class="form-label">Name</label>
+                              <input name="name" type="text" class="form-control" id="name_input" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="desc_input" class="form-label">Description</label>
+                                <textarea id="desc_input" name="description" class="form-control" placeholder="Write your post here" required></textarea>
+                            </div>
+                            
+                            <input type="hidden" name="id" id="id_input">
+                            <input type="hidden" id="user" name="user" value="{{request.user.id}}">
+
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            {% comment %} delete category modal {% endcomment %}
+            <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <form id="delete_cat_form" action="{% url 'workspace:DeleteCategory' %}" method="POST">{% csrf_token %}
+                            <input type="hidden" name="id" id="cat_id_field" value="">
+                        </form>
+                        <button type="submit" onclick="submit_delete_modal_form();" class="btn btn-sm btn-danger" name="cat_id" value="">Delete</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="fs-3">Your posts categories</h2>
+                    <p>Content is king! And you'll feel the same once you start adding it to your categories.</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button class="btn btn-warning my-2" data-bs-toggle="modal" data-bs-target="#category-form-modal">
+                        New Category
+                    </button>
+                    <form action="{% url 'workspace:TestPublishPost' %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-warning my-2" type="submit">
+                            Test Publish
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                {% for category in categories %}
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-dark p-1"></div>
+                            <div class="card-body p-0" style="min-height: 250px;">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ul class="list-group">
+                                            <li class="list-group-item p-3">
+                                                <h5>{{category.name}}</h5>
+                                                <p><small>{{category.description}}</small></p>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="category-active-check">
+                                                    <label class="form-check-label" for="category-active-check">Active</label>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item p-3">
+                                                <div class="row align-items-center">
+                                                    <div class="col-12">
+                                                        <span class="me-2">Posts For</span>
+                                                        {% for count in counter %}
+                                                            {% if count.name == category.name %}
+                                                                {% if count.data.items %}
+                                                                    {% for type in count.data.types %}
+                                                                        {% if type.name == 'instagram' %}
+                                                                            <div class="d-inline position-relative">
+                                                                                <span class="position-absolute top-0 translate-middle badge rounded-circle bg-dark" style="left: 80%;">
+                                                                                    {{type.val}}
+                                                                                </span>
+                                                                                <img src="https://cdn.pixabay.com/photo/2016/08/09/17/52/instagram-1581266_1280.jpg" alt="" width="50px" height="50px" class="rounded-circle">
+                                                                            </div>
+                                                                        {% elif type.name == 'facebook' %}
+                                                                            <div class="d-inline position-relative">
+                                                                                <span class="position-absolute top-0 translate-middle badge rounded-circle bg-dark" style="left: 80%;">
+                                                                                    {{type.val}}
+                                                                                </span>
+                                                                                <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Facebook_Logo.png" alt="" width="50px" height="50px" class="rounded-circle">
+                                                                            </div>
+                                                                        {% elif type.name == 'twitter' %}
+                                                                            <div class="d-inline position-relative">
+                                                                                <span class="position-absolute top-0 translate-middle badge rounded-circle bg-dark" style="left: 80%;">
+                                                                                    {{type.val}}
+                                                                                </span>
+                                                                                <img src="https://e7.pngegg.com/pngimages/708/311/png-clipart-twitter-twitter-thumbnail.png" alt="" width="50px" height="50px" class="rounded-circle">
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item p-3">
+                                                <div class="row">
+                                                    <div class="col-6 text-center fs-6">
+                                                        <a href="#" class="a-no-style">
+                                                            <a href="{% url 'workspace:SingleContentView' category.id %}" class="a-no-style">
+                                                                <p class="m-0">
+                                                                    <i class="fas fa-paper-plane"></i>
+                                                                </p>
+                                                                <span>View Posts <br> ({{category.post_count}} posts)</span>
+                                                            </a>
+                                                            
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6 text-center fs-6">
+                                                        {% comment %} <a href="#" class="a-no-style">
+                                                            <p class="m-0">
+                                                                <i class="fas fa-cog"></i>
+                                                            </p>
+                                                            <span>Edit Category</span>
+                                                        </a> {% endcomment %}
+
+                                                            <button class="btn" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-bs-catid="{{category.id}}" data-bs-catname="{{category.name}}" data-bs-catdesc="{{category.description}}">
+                                                            <i class="fas fa-edit"></i></button>
+                                                            
+                                                            <button class="btn" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-bs-catid="{{category.id}}" data-bs-catname="{{category.name}}"><i class="fas fa-trash-alt"></i></button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="category-form-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="category-form-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="category-form-modal-label">Create New Category</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'workspace:ContentView' %}" method="POST">
+                    {% csrf_token %}
+                    {{category_form|crispy}}
+                    <input type="hidden" name="action" value="create">
+                    <button type="submit" class="btn btn-primary mt-3">Create</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+{% block ExtraJs %}
+
+<script>
+    let editCategoryModal = document.getElementById('editCategoryModal')
+    editCategoryModal.addEventListener('show.bs.modal', function (event) {
+        let button = event.relatedTarget
+        let cat_id = button.getAttribute('data-bs-catid')
+        let cat_name = button.getAttribute('data-bs-catname')
+        let cat_desc = button.getAttribute('data-bs-catdesc')
+        let id_field = editCategoryModal.querySelector('#id_input')
+        let name_field = editCategoryModal.querySelector('#name_input')
+        let desc_field = editCategoryModal.querySelector('#desc_input')
+        let form = editCategoryModal.querySelector('#edit_cat_form')
+        let submitBtn = editCategoryModal.querySelector('#submit')
+        id_field.value = cat_id
+        name_field.value = cat_name
+        desc_field.value = cat_desc
+
+    });
+
+    let deleteCategoryModal = document.getElementById('deleteCategoryModal')
+    deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
+        let button = event.relatedTarget
+        let cat_id = button.getAttribute('data-bs-catid')
+        let cat_name = button.getAttribute('data-bs-catname')
+        let modalTitle = deleteCategoryModal.querySelector('.modal-title')
+        let modalBody = deleteCategoryModal.querySelector('.modal-body')
+        let submitBtn = deleteCategoryModal.querySelector('#submit')
+        let cat_id_field = deleteCategoryModal.querySelector('#cat_id_field')
+        modalTitle.textContent = `Delete Category Object ${cat_id}`
+        modalBody.innerHTML = `<p><b>${cat_name}</b></p><p>Are you sure you want to delete this category?<br>This cannot be undone.</p>`
+        cat_id_field.value = cat_id
+    });
+</script>
+
+<script>
+    function submit_delete_modal_form() {
+        const delete_cat_form = document.getElementById('delete_cat_form')
+        delete_cat_form.submit()
+    }
+</script>
+
+{% endblock ExtraJs %}

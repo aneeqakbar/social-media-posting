@@ -1,0 +1,193 @@
+{% extends 'workspace/index.html' %}
+
+{% block ExtraCss %}
+{% endblock ExtraCss %}
+
+{% block content %}
+    <main class="body flex-grow-1 px-3">
+        <article class="container-lg">
+            <h2 class="fs-3 mb-4">Social Profiles Overview</h2>
+            <div class="row">
+                {% for account in social_accounts %}
+                    <section class="col-12 col-lg-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-dark text-light">
+                                <small class="">{{account.backend}}</small>
+                            </div>
+                            <div class="card-body p-0" style="min-height: 400px;">
+                                <div class="row">
+                                    <div class="col-12 col-md-4">
+                                        <div class="w-100 m-md-3 my-3 text-center">
+                                            <img src="{{account.image}}" alt="" width="100px" height="100px" class="rounded-circle mb-3 border border-primary">
+                                            <br>
+                                            <span>{{account.name}}</span>
+                                            <br>
+                                            <span class="text-muted">{{account.type}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <ul class="list-group rounded-0 border-start" style="height: 400px;">
+                                            <li class="list-group-item border-0 border-top p-3">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <i class="fas fa-calendar-alt me-1"></i> 
+                                                        <span>Schedule Setup</span>
+                                                    </div>
+                                                    <div class="col-4 text-end">
+                                                        <a href="#" class="a-no-style">
+                                                            <span><i class="fas fa-chevron-right"></i></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item border-0 border-top p-3">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <i class="fas fa-paper-plane me-1"></i>
+                                                        <span>Next Post ({{account.posts.all.count}})</span>
+                                                    </div>
+                                                    <div class="col-4 text-end">
+                                                        <a href="#" class="a-no-style">
+                                                            <span>View All</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item border-0 border-top p-3">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <i class="fas fa-bell me-1"></i>
+                                                        <span>Notifications</span>
+                                                    </div>
+                                                    <div class="col-4 text-end">
+                                                        <a href="#" class="a-no-style">
+                                                            <span>View All</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item border-0 border-top p-3">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <i class="fas fa-cog me-1"></i>
+                                                        <span>More Settings</span>
+                                                    </div>
+                                                    <div class="col-4 text-end">
+                                                        <a href="#" class="a-no-style">
+                                                            <span>View All</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                {% endfor %}
+            </div>
+
+
+            <div class="row justify-content-evenly my-4">
+                <section class="col-12 col-lg-8 text-center">
+                    <h2>Connect a new profile</h2>
+
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2 text-center mb-2">
+                                  <a href="#" class="social-icon a-no-style bg-facebook">
+                                      <i class="fab fa-facebook-f fs-2"></i>
+                                  </a>
+                                  <div class="row">
+                                    <div class="col-12 mb-2">
+                                        <a href="{% url 'social:begin' 'facebook' %}?next=select-fb-pages/" class="btn btn-sm bg-facebook w-100">
+                                            Page
+                                        </a>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <a href="{% url 'social:begin' 'facebook' %}?next=select-fb-groups/" class="btn btn-sm bg-facebook w-100">
+                                            Group
+                                        </a>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2 text-center mb-2">
+                                  <a href="#" class="social-icon a-no-style bg-instagram">
+                                      <i class="fab fa-instagram fs-2"></i>
+                                  </a>
+                                  <div class="row">
+                                    <div class="col-12 mb-2">
+                                        <button class="btn btn-sm bg-instagram w-100">Connect</button>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <button class="btn btn-sm bg-instagram w-100">Connect</button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2 text-center mb-2">
+                                  <a href="#" class="social-icon a-no-style bg-twitter">
+                                      <i class="fab fa-twitter fs-2"></i>
+                                  </a>
+                                  <div class="row">
+                                    <div class="col-12 mb-2">
+                                        <a href="{% url 'social:begin' 'twitter' %}" class="btn btn-sm bg-twitter w-100">
+                                            Connect
+                                        </a>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <button class="btn btn-sm bg-twitter w-100">Connect</button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2 text-center mb-2">
+                                  <a href="#" class="social-icon a-no-style bg-pinterest">
+                                      <i class="fab fa-pinterest fs-2"></i>
+                                  </a>
+                                  <div class="row">
+                                    <div class="col-12 mb-2">
+                                        <button class="btn btn-sm bg-pinterest w-100">Connect</button>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <button class="btn btn-sm bg-pinterest w-100">Connect</button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2 text-center mb-2">
+                                  <a href="#" class="social-icon a-no-style bg-linkedin">
+                                      <i class="fab fa-linkedin fs-2"></i>
+                                  </a>
+                                  <div class="row">
+                                    <div class="col-12 mb-2">
+                                        <button class="btn btn-sm bg-linkedin w-100">Connect</button>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <button class="btn btn-sm bg-linkedin w-100">Connect</button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-6 col-sm-4 col-md-3 col-xl-2 text-center mb-2">
+                                  <a href="#" class="social-icon a-no-style bg-google">
+                                      <i class="fab fa-google fs-2"></i>
+                                  </a>
+                                  <div class="row">
+                                    <div class="col-12 mb-2">
+                                        <button class="btn btn-sm bg-google w-100">Connect</button>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <button class="btn btn-sm bg-google w-100">Connect</button>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </article>
+    </main>
+{% endblock content %}
+
+{% block ExtraJs %}
+{% endblock ExtraJs %}

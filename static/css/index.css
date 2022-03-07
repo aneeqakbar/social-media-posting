@@ -1,0 +1,9 @@
+@import url('/static/assets/fonts/simple-line-icons.ttf');
+@font-face {
+    font-family: "minecraft";
+    src: url("/static/assets/fonts/simple-line-icons.ttf")
+}
+
+.main {
+    margin-top: 4.6rem;
+}
