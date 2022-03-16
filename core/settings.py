@@ -62,11 +62,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.open_id.OpenIdAuth',
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.linkedin.LinkedinOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.google.GoogleOAuth',
     'social_core.backends.twitter.TwitterOAuth',
@@ -97,6 +97,15 @@ SOCIAL_AUTH_TWITTER_KEY = '2Gn0QeYAgAvde9GOPRkfHFNJu'
 SOCIAL_AUTH_TWITTER_SECRET = 'TbASiDsA75qYEyLYVoaV4eokIx6FrQB3XHInwAJdm5lr7GCf6a'
 # YTjjDltkA-q53g9VxBuGVU1LwVuKq93mWLahXZq6-wE662iAzp
 
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '7719tdz6tlbuxo'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'tEVbnE5ZR5Ga2AUg'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_liteprofile', 'r_emailaddress', 'w_member_social']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['emailAddress', 'profilePicture(displayImage~digitalmediaAsset:playableStreams)']
+SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
+                                          ('firstName', 'first_name'),
+                                          ('lastName', 'last_name'),
+                                          ('emailAddress', 'email_address'),
+                                          ('profilePicture', 'profile_picture')]
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',

@@ -14,9 +14,12 @@ from django.core import serializers
 from workspace.models import Category, DayName, Post, SchedulePost
 
 import os
-import facebook
+
+from .postings import FacebookPosting, LinkedInPosting
 import requests
 import datetime
+from pathlib import Path
+
 
 
 class IndexView(LoginRequiredMixin, View):
@@ -388,7 +391,6 @@ class TestPublishPost(View):
         for account in accounts:
             if account.backend == "twitter":
                 # media_init_url = f"https://upload.twitter.com/1.1/media/upload.json?command=INIT&total_bytes=10240&media_type=image/jpeg"
-                # media_init_url = f"https://upload.twitter.com/1.1/media/upload.json"
                 media_chunk_size = 500
                 media_post_url = "https://upload.twitter.com/1.1/media/upload.json"
                 post_url = 'https://api.twitter.com/1.1/statuses/update.json'
@@ -411,21 +413,47 @@ class TestPublishPost(View):
                             image_path = f"{settings.BASE_DIR}{post.image.url}"
                             with open(image_path, "rb") as file:
                                 # Read the whole file at once
-                                binary_data = file.read()
+                                # binary_data = file.read()
+                                CHUNK_SIZE = 500
+                                chunk_count = 1
+                                chunk = file.read(CHUNK_SIZE)
+                                media_chunks = []
+                                while chunk:
+                                    media_chunks.append(chunk)
+                                    chunk_count += 1
+                                    chunk = file.read(CHUNK_SIZE)
+                                print(chunk_count, media_chunks)
+
                                 file_name, file_extension = os.path.splitext(image_path)
                                 file_size = os.path.getsize(image_path) # in bytes
                                 print(file_size)
-                                name = f"From webapp {file_name}"
                                 media_post_params = {
-                                    "Name": name,
                                     "command": "INIT",
                                     "total_bytes": f"{file_size}",
-                                    "media_type": f"{file_extension}",
+                                    # "media_type": f"{file_extension}",
+                                    "media_type": "image/jpeg",
                                 }
                                 media_post_headers = {
-                                    'Content-Type': "application/form-data",
+                                    'Content-Type': "application/x-www-form-urlencoded",
                                 }
+
                                 res = session.post(url=media_post_url, params=media_post_params, headers=media_post_headers)
+                                media_id = res.json()["media_id"]
+                                print(media_id)
+                                # for i, chunk in enumerate(media_chunks):
+                                #     media_post_params = {
+                                #         "command": "APPEND",
+                                #         "media_id": media_id,
+                                #         "media": chunk,
+                                #         "segment_index": i,
+                                #     }
+                                #     media_post_headers = {
+                                #         'Content-Type': "multipart/form-data",
+                                #     }
+
+                                #     res = session.post(url=media_post_url, params=media_post_params, headers=media_post_headers)
+                                #     print(res)
+                                #     print(res.json())
                         if post.description:
                             post_params = {
                                 'status': post.description,
@@ -433,27 +461,24 @@ class TestPublishPost(View):
                             if media_id:
                                 post_params['media_ids'] = f'{media_id}'
                             res = session.post(url=post_url, params=post_params)
-                            print("Posted: ", res)
+                            print("TW: Posted: ", res)
+                        post_count += 1
                     except:
                         pass
-                    post_count += 1
             elif account.backend == "facebook":
-                token_instance = request.user.long_lived_tokens.filter(backend="facebook").first()
-                token = token_instance.token
                 if account.type == "Page":
-                    graph = facebook.GraphAPI(account.token)
+                    token = account.token
                 elif account.type == "Group":
-                    graph = facebook.GraphAPI(token)
-                for post in account.posts.all():
-                    try:
-                        if post.image and account.type == "Page":
-                            image_path = f"{settings.BASE_DIR}{post.image.url}"
-                            graph.put_photo(image=open(image_path, 'rb'),
-                                            message=post.description)
-                        elif post.description:
-                            graph.put_object(account.unique_id, "feed", message=f"{post.description}")
-                    except:
-                        pass
-                    post_count += 1
+                    token_instance = request.user.long_lived_tokens.filter(backend="facebook").first()
+                    token = token_instance.token
+                posting = FacebookPosting(account, token)
+                posting.make_posts()
+
+            elif account.backend == "linkedin-oauth2":
+                token_instance = request.user.long_lived_tokens.filter(backend="linkedin-oauth2").first()
+                token = json.loads(token_instance.token)
+                posting = LinkedInPosting(account=account, token=token)
+                posting.make_posts()
+
         messages.success(request, f"Successfully, Published {post_count} Posted")
         return redirect("workspace:IndexView")

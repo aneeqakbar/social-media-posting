@@ -6,6 +6,31 @@ import requests
 
 
 def custom_details(backend, details, response, user, *args, **kwargs):
+
+    if backend.name == "linkedin-oauth2":
+        access_token = response["access_token"]
+        token_instance, created = SocialLongLivedToken.objects.get_or_create(user = user, backend = backend.name)
+        token_instance.token = json.dumps(access_token)
+        token_instance.save()
+
+        name = details["username"]
+        user_id = response["id"]
+        try:
+            profile_image_url = response["profilePicture"]["displayImage~"]["elements"][1]["identifiers"][0]["identifier"]
+        except:
+            profile_image_url = response["profilePicture"]["displayImage~"]["elements"][0]["identifiers"][0]["identifier"]
+
+        account, created = SocialAccount.objects.get_or_create(
+            user = user,
+            unique_id = user_id,
+            backend = backend.name,
+        )
+        account.name = name
+        account.token = json.dumps(access_token)
+        account.type = "Account"
+        account.image = profile_image_url
+        account.save()
+
     if backend.name == "twitter":
         access_token = response["access_token"]
         token_instance, created = SocialLongLivedToken.objects.get_or_create(user = user, backend = backend.name)

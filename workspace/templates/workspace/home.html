@@ -132,12 +132,9 @@
                                   </a>
                                   <div class="row">
                                     <div class="col-12 mb-2">
-                                        <a href="{% url 'social:begin' 'twitter' %}" class="btn btn-sm bg-twitter w-100">
-                                            Connect
+                                        <a href="{% url 'social:begin' 'twitter' %}?next=/workspace/" class="btn btn-sm bg-twitter w-100">
+                                            Profile
                                         </a>
-                                    </div>
-                                    <div class="col-12 mb-2">
-                                        <button class="btn btn-sm bg-twitter w-100">Connect</button>
                                     </div>
                                   </div>
                                 </div>
@@ -160,10 +157,9 @@
                                   </a>
                                   <div class="row">
                                     <div class="col-12 mb-2">
-                                        <button class="btn btn-sm bg-linkedin w-100">Connect</button>
-                                    </div>
-                                    <div class="col-12 mb-2">
-                                        <button class="btn btn-sm bg-linkedin w-100">Connect</button>
+                                        <a href="{% url 'social:begin' 'linkedin-oauth2' %}" class="btn btn-sm bg-linkedin w-100">
+                                            Profile
+                                        </a>
                                     </div>
                                   </div>
                                 </div>

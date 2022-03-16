@@ -62,6 +62,7 @@ class SocialLongLivedToken(models.Model):
         ("facebook", "Facebook"),
         ("instagram", "Instagram"),
         ("twitter", "Twitter"),
+        ("linkedin-oauth2", "LinkedIn"),
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="long_lived_tokens")
     backend = models.CharField(max_length=255, choices=SOCIAL_MEDIA_CHOICES)
@@ -77,6 +78,7 @@ class SocialAccount(models.Model):
         ("facebook", "Facebook"),
         ("instagram", "Instagram"),
         ("twitter", "Twitter"),
+        ("linkedin-oauth2", "LinkedIn"),
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="social_posts_accounts")
     backend = models.CharField(max_length=255, choices=SOCIAL_MEDIA_CHOICES)
